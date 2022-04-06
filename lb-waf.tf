@@ -55,7 +55,7 @@ resource "volterra_http_loadbalancer" "this" {
   name                            = format("%s-lb", var.web_app_name)
   namespace                       = var.volterra_namespace
   description                     = format("HTTPS loadbalancer object for %s origin server", var.web_app_name)
-  domains                         = [var.app_domain[0]]
+  domains                         = var.app_domain
   advertise_on_public_default_vip = true
   default_route_pools {
     pool {
