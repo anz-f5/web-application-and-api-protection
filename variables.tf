@@ -34,7 +34,7 @@ variable "volterra_namespace" {
 variable "app_domain" {
   type        = list(any)
   description = "FQDN for the app."
-  default     = ["cz-shop.f5xc.meowmeowcode.io"]
+  default     = ["shop.f5xc.meowmeowcode.io"]
 }
 
 variable "origin_server_dns_name" {
