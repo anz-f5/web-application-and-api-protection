@@ -1,11 +1,16 @@
-# Web Application and API Protection (WAAP) on F5 Distributed Clouds (F5XC) 
+# How to use Web Application and API Protection service on the F5 Distributed Cloud
 
 ## Overview
-This repo aims to demonstrate how to use SaaS based WAAP via the F5XC platform.
+The F5 Distributed Cloud ( F5XC, https://www.f5.com/cloud ) provides a list of SaaS services. This repo focuses on the Web Application and API protection (WAAP) service.
 
-The F5XC has its own set of Terraform providers ( https://docs.cloud.f5.com/docs/how-to/volterra-automation-tools/terraform ). 
+WAAP essentially provides L7 based firewall protection for web and API traffic.
 
-This repo uses the provider to create the followings,
+This repo contains sample automation code to build a WAAP on F5XC to protect a backend web application.
+
+## Solution
+The F5XC comes with a Terraform provider ( https://registry.terraform.io/providers/volterraedge/volterra/latest ). 
+
+This repo uses the provider to build the WAAP, and creates the following components in that process,
 
  - a HTTP load balancer
  - an origin pool
@@ -13,20 +18,24 @@ This repo uses the provider to create the followings,
  - an app firewall
  - a security policy
 
-The app firewall provides signature based protection to all traffic.
+The HTTP load balancer creates an entry point for all client traffic. DNS resolution will point to a public IP hosted on F5XC.
 
-For API protection, it is accomplished via a service policy and its associated custom rule list. 
+The origin pool contains a member pointing to the backend web application.
 
-The rule list contains individual rules that apply an action (Allow/Deny) based upon the group name of an API. The group name of an API is defined withint an API definition swagger file (i.e., shopazone-swagger.json).
+The monitor provides health monitoring for the backend web application
 
-Inside of this swagger file, individual API's are put into assigned groups via tags. In the below example, after this swagger file is imported , the group name 'ves-io-api-def-myshop-apidef-read' is referenced in an individual rule.
+The app firewall provides **signature** based protection for all traffic (API and non-API).
+
+The security policy is created to bring in API protection. It has a custom rule list comprising individual rules that apply an action (Allow/Deny) based upon the group name of an API. The group name of an API is defined withint an API definition swagger file (i.e., shopazone-swagger.json).
+
+Inside of this swagger file, individual API's are put into assigned groups via tags. In the below example, after this swagger file is imported, the group name 'ves-io-api-def-myshop-apidef-read' is created and then referenced by an individual rule.
 
 ```python
 ...
 "x-volterra-api-group": "read",
 ...
 ```
-Currently a **volterra_api_definition** resource (within api-definition.tf) expects a value for swagger_specs, which is only available after you have uploaded the swagger file via GUI beforehand.
+Currently a **volterra_api_definition** resource (within api-definition.tf) expects a value for **swagger_specs**, which is only obtained via uploading the swagger file via GUI beforehand.
 
 ## Notes
 
