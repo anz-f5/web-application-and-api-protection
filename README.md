@@ -3,9 +3,11 @@
 ## Overview
 The F5 Distributed Cloud ( F5XC, https://www.f5.com/cloud ) provides SaaS-based services in security, networking, and application management. 
 
-The Web Application and API Protection (WAAP) service is part of the security services that the F5XC provides, it is a L7 based firewall protection service catered to both web and API traffic.
+The Web Application and API Protection (WAAP) service is part of the security services that the F5XC provides, it is a L7 based firewall protection service catered to applications serving both web and API traffic.
 
 This repo contains sample automation code to build a WAAP service on the F5XC to protect a backend web application with both web and API traffic.
+
+The overall architecture is shown below.
 
 ![image info](architecture.png)
 
