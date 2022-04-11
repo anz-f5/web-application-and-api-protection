@@ -87,7 +87,7 @@ openssl pkcs12 -info -in f5-apac-ent.console.ves.volterra.io.api-creds.p12 -node
 Once Terraform apply completes, the following is printed.
 
 ```python
-f5_distributed_cloud_protected_app_url = "https://shop.f5xc.meowmeowcode.io"
+WAAP_URL_for_protected_application = "https://shop.f5xc.meowmeowcode.io"
 ```
 
 Point your client traffic to the above URL and they will be protected by WAAP.

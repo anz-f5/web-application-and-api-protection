@@ -1,4 +1,4 @@
-output "f5_distributed_cloud_protected_app_url" {
-  description = "Domain VIP to access the web app"
+output "WAAP_URL_for_protected_application" {
+  description = "WAAP URL for protected appliation"
   value       = format("https://%s", var.app_domain[0])
 }
