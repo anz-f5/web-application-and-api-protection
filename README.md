@@ -7,7 +7,7 @@ The Web Application and API Protection (WAAP) service is part of the security se
 
 This repo contains sample automation code to build a WAAP service on the F5XC to protect a backend web application with both web and API traffic.
 
-![pdf info](architecture.pdf)
+![image info](architecture.png)
 
 ## Solution
 The F5XC comes with a Terraform provider ( https://registry.terraform.io/providers/volterraedge/volterra/latest ). 
