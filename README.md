@@ -11,7 +11,7 @@ This repo includes sample automation code required to build a WAAP service on th
 
 The overall architecture looks like below.
 
-![image info](architecture.png)
+![image info](./files/architecture.png)
 
 This repo uses automation to build the WAAP service, and creates the following components in that process,
 
@@ -64,8 +64,8 @@ openssl pkcs12 -info -in f5-apac-ent.console.ves.volterra.io.api-creds.p12 -node
 
 | Name | Description | Type | Example | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_api_cert"></a> [api\_cert](#input\_api\_cert) | Certificate for F5XC API access | `string` | `"./certificate.cert"` | no |
-| <a name="input_api_key"></a> [api\_key](#input\_api\_key) | Private key for F5XC API access | `string` | `"./private_key.key"` | no |
+| <a name="input_api_cert"></a> [api\_cert](#input\_api\_cert) | Certificate for F5XC API access | `string` | `"./files/certificate.cert"` | no |
+| <a name="input_api_key"></a> [api\_key](#input\_api\_key) | Private key for F5XC API access | `string` | `"./files/private_key.key"` | no |
 | <a name="input_api_url"></a> [api\_url](#input\_api\_url) | API URL for your F5XC tenant | `string` | `"https://f5-apac-ent.console.ves.volterra.io/api"` | no |
 | <a name="input_app_domain"></a> [app\_domain](#input\_app\_domain) | FQDN(s) for the app. | `list` |  [ <br> "shop.f5xc.meowmeowcode.io" <br> ] | no |
 | <a name="input_enable_hsts"></a> [enable\_hsts](#input\_enable\_hsts) | Flag to enable hsts for HTTPS loadbalancer | `bool` | `true` | no |
