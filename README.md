@@ -1,16 +1,18 @@
 # How to use Web Application and API Protection service on the F5 Distributed Cloud
 
 ## Overview
-The F5 Distributed Cloud ( F5XC, https://www.f5.com/cloud ) provides a list of SaaS services. This repo focuses on the Web Application and API protection (WAAP) service.
+The F5 Distributed Cloud ( F5XC, https://www.f5.com/cloud ) provides SaaS-based services in security, networking, and application management. 
 
-WAAP essentially provides L7 based firewall protection for web and API traffic.
+The Web Application and API Protection (WAAP) service is part of the security services that the F5XC provides, it is a L7 based firewall protection service catered to both web and API traffic.
 
-This repo contains sample automation code to build a WAAP on F5XC to protect a backend web application.
+This repo contains sample automation code to build a WAAP service on the F5XC to protect a backend web application with both web and API traffic.
+
+![pdf info](architecture.pdf)
 
 ## Solution
 The F5XC comes with a Terraform provider ( https://registry.terraform.io/providers/volterraedge/volterra/latest ). 
 
-This repo uses the provider to build the WAAP, and creates the following components in that process,
+This repo uses the provider to build the WAAP service, and creates the following components in that process,
 
  - a HTTP load balancer
  - an origin pool
@@ -18,28 +20,28 @@ This repo uses the provider to build the WAAP, and creates the following compone
  - an app firewall
  - a security policy
 
-The HTTP load balancer creates an entry point for all client traffic. DNS resolution will point to a public IP hosted on F5XC.
+The HTTP load balancer creates an entry point for all client traffic. A DNS subdomain is delegated to the F5XC beforehand ( https://docs.cloud.f5.com/docs/how-to/app-networking/domain-delegation ), and this allows for 
 
 The origin pool contains a member pointing to the backend web application.
 
-The monitor provides health monitoring for the backend web application
+The monitor provides health monitoring for the backend web application.
 
-The app firewall provides **signature** based protection for all traffic (API and non-API).
+The app firewall provides **signature** based protection for all traffic (API and non-API traffic).
 
 The security policy is created to bring in API protection. It has a custom rule list comprising individual rules that apply an action (Allow/Deny) based upon the group name of an API. The group name of an API is defined withint an API definition swagger file (i.e., shopazone-swagger.json).
 
-Inside of this swagger file, individual API's are put into assigned groups via tags. In the below example, after this swagger file is imported, the group name 'ves-io-api-def-myshop-apidef-read' is created and then referenced by an individual rule.
+Inside of this swagger file, individual API's are put into assigned groups via tags. In the below example, after this swagger file is imported, the group name 'ves-io-api-def-myshop-apidef-read' is created (automation code added in additional texts) and then referenced by an individual rule.
 
 ```python
 ...
 "x-volterra-api-group": "read",
 ...
 ```
-Currently a **volterra_api_definition** resource (within api-definition.tf) expects a value for **swagger_specs**, which is only obtained via uploading the swagger file via GUI beforehand.
+Please note, within the Terraform provider, a **volterra_api_definition** resource (defined within api-definition.tf) expects a value for **swagger_specs**. This value is only available after uploading the swagger file through the GUI beforehand.
 
 ## Notes
 
-The Terraform provider expects the following for API access to F5XC
+The Terraform provider expects the following for API access to the F5XC
 
 ```python
 provider "volterra" {
@@ -48,9 +50,7 @@ provider "volterra" {
   url      = var.api_url
 }
 ```
-This menas you need to create a credential within F5XC portal in the form of an API certificate. 
-
-The certificate comes as a .p12 file and you can extra the cert and key and save them into two seperate files as follows.
+This menas you need to create a credential within F5XC portal in the form of an API certificate and extract the cert and key seperately. Take a look at this ( https://docs.cloud.f5.com/docs/how-to/user-mgmt/credentials#my-credentials ) for details.
 
 ```python
 openssl pkcs12 -info -in f5-apac-ent.console.ves.volterra.io.api-creds.p12 -nokeys -out certificate.cert 
