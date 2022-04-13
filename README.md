@@ -35,7 +35,7 @@ The security policy is created to bring in API protection. It has a custom rule 
 
 Inside of this swagger file, individual API's are put into assigned groups via tags. In the below example, after this swagger file is imported, the group name 'ves-io-api-def-myshop-apidef-read' is created (automation code added in additional texts) and then referenced by an individual rule.
 
-```python
+```
 ...
 "x-volterra-api-group": "read",
 ...
@@ -55,7 +55,7 @@ provider "volterra" {
 ```
 You need to create a credential within F5XC portal in the form of an API certificate and extract the cert and key seperately. Take a look at this ( https://docs.cloud.f5.com/docs/how-to/user-mgmt/credentials#my-credentials ) for details.
 
-```python
+```
 openssl pkcs12 -info -in f5-apac-ent.console.ves.volterra.io.api-creds.p12 -nokeys -out certificate.cert 
 
 openssl pkcs12 -info -in f5-apac-ent.console.ves.volterra.io.api-creds.p12 -nodes -nocerts -out private.key 
