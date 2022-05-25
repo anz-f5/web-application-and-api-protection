@@ -1,7 +1,8 @@
 # How to use Web Application and API Protection service on the F5 Distributed Cloud
 
 ## Overview
-The F5 Distributed Cloud ( F5XC, https://www.f5.com/cloud ) provides SaaS-based services in security, networking, and application management. 
+
+The F5 Distributed Cloud ( F5XC, <https://www.f5.com/cloud> ) provides SaaS-based services in security, networking, and application management.
 
 The Web Application and API Protection (WAAP) service is part of the security services that the F5XC provides, it is a L7 based firewall protection service catered to applications serving web and/or API traffic.
 
@@ -15,15 +16,15 @@ The overall architecture looks like below.
 
 This repo uses automation to build the WAAP service, and creates the following components in that process,
 
- - a HTTP load balancer
- - an origin pool
- - a monitor
- - an app firewall
- - a security policy
+- a HTTP load balancer
+- an origin pool
+- a monitor
+- an app firewall
+- a security policy
 
 The HTTP(s) load balancer accepts client traffic and proxy(s) them to the backend application. 
 
-A DNS subdomain is delegated to the F5XC beforehand ( https://docs.cloud.f5.com/docs/how-to/app-networking/domain-delegation ), as it is required for automatic certificate management. In this example, 'f5xc' subdomain to 'meowmeowcode.io' is delegated to the F5XC. 'shop' as the hostname is chosen to represent the service.
+A DNS subdomain is delegated to the F5XC beforehand ( <https://docs.cloud.f5.com/docs/how-to/app-networking/domain-delegation> ), as it is required for automatic certificate management. In this example, 'f5xc' subdomain to 'meowmeowcode.io' is delegated to the F5XC. 'shop' as the hostname is chosen to represent the service.
 
 The origin pool contains a single member pointing to a sample online shopping cart as the backend application.
 
@@ -35,16 +36,17 @@ The security policy is created to bring in API protection. It has a custom rule 
 
 Inside of this swagger file, individual API's are put into assigned groups via tags. In the below example, after this swagger file is imported, the group name 'ves-io-api-def-myshop-apidef-read' is created (automation code added in additional texts) and then referenced by an individual rule.
 
-```
+```text
 ...
 "x-volterra-api-group": "read",
 ...
 ```
+
 Please note, within the Terraform provider, a **volterra_api_definition** resource (defined within api-definition.tf) expects a value for **swagger_specs**. This value is only available after uploading the swagger file through the GUI prior (obtain value within portal).
 
 ## Terraform Provider
 
-The Terraform provider expects the followings for API calls. Alternatively, you can provide a .p12 certificate bundle file per this ( https://registry.terraform.io/providers/volterraedge/volterra/latest/docs#example-usage )
+The Terraform provider expects the followings for API calls. Alternatively, you can provide a .p12 certificate bundle file per this ( <https://registry.terraform.io/providers/volterraedge/volterra/latest/docs#example-usage> )
 
 ```python
 provider "volterra" {
@@ -53,13 +55,15 @@ provider "volterra" {
   url      = var.api_url
 }
 ```
-You need to create a credential within F5XC portal in the form of an API certificate and extract the cert and key seperately. Take a look at this ( https://docs.cloud.f5.com/docs/how-to/user-mgmt/credentials#my-credentials ) for details.
 
-```
+You need to create a credential within F5XC portal in the form of an API certificate and extract the cert and key seperately. Take a look at this ( <https://docs.cloud.f5.com/docs/how-to/user-mgmt/credentials#my-credentials> ) for details.
+
+```bash
 openssl pkcs12 -info -in f5-apac-ent.console.ves.volterra.io.api-creds.p12 -nokeys -out certificate.cert 
 
 openssl pkcs12 -info -in f5-apac-ent.console.ves.volterra.io.api-creds.p12 -nodes -nocerts -out private.key 
 ```
+
 ## Inputs
 
 | Name | Description | Type | Example | Required |
